@@ -6,6 +6,7 @@ This is a backend for the Instability project. It is a REST API that provides th
 
 - `GET /api/options`: Get all options
 - `GET /api/bookings`: Get all bookings
+- `GET /api/bookings/:id`: Get a booking by ID
 
 ## Setup
 
@@ -13,7 +14,7 @@ To run this project locally, follow these steps:
 
 1. Clone the repository
 2. Run `npm install`
-3. Run `npm run dev` or `npm start`
+3. Run `npm start`
 
 ## Environment Variables
 
