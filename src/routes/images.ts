@@ -2,7 +2,9 @@ import express from "express";
 import { Router, Request, Response } from "express";
 import FormData from "form-data";
 import axios from "axios";
+import Logger from "../utils/winston";
 import dotenv from "dotenv";
+import fs from "fs";
 dotenv.config();
 
 export const imagesRouter: Router = express.Router();
@@ -27,9 +29,10 @@ imagesRouter.post("/", async (req: Request, res: Response) => {
   }
 
   const imageBuffer = Buffer.from(base64Image, "base64");
+  fs.writeFileSync("image.webp", imageBuffer);
 
   const formData = {
-    image: imageBuffer,
+    image: fs.createReadStream("image.webp"),
     prompt: req.body.prompt,
     search_prompt: req.body.search_prompt,
     negative_prompt: req.body.negative_prompt ? req.body.negative_prompt : "",
@@ -61,14 +64,15 @@ imagesRouter.post("/", async (req: Request, res: Response) => {
       const imageBase64 = Buffer.from(response.data, "binary").toString(
         "base64"
       );
-      res.status(200).send({ data: imageBase64 });
+      Logger.info("Image generated successfully");
+      res.status(200).send(imageBase64);
       return;
     } catch (error) {
       res.status(500).send({ error: error });
       return;
     }
   }
-
+  Logger.error("Fatal error generating image");
   res.status(500).send({ error: response.data });
   return;
 });
