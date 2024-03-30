@@ -1,6 +1,5 @@
 import express, { Express } from 'express';
-import { optionsRouter } from './routes/options';
-import { bookingsRouter } from './routes/bookings';
+import { optionsRouter, bookingsRouter, imagesRouter } from './routes/';
 
 export default function configureServer(): Express {
     const app: Express = express();
@@ -11,6 +10,7 @@ export default function configureServer(): Express {
     // Routes go here
     app.use('/api/options', optionsRouter);
     app.use('/api/bookings', bookingsRouter);
+    app.use('/api/images', imagesRouter);
 
     return app;
 }
