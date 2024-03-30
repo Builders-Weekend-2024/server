@@ -1,18 +1,24 @@
-import express, { Express } from 'express';
-import { optionsRouter, bookingsRouter, imagesRouter } from './routes/';
-import cors from 'cors';
+import express, { Express } from "express";
+import {
+  optionsRouter,
+  bookingsRouter,
+  imagesRouter,
+  rebaseRouter,
+} from "./routes/";
+import cors from "cors";
 
 export default function configureServer(): Express {
-    const app: Express = express();
+  const app: Express = express();
 
-    // Middleware go here
-    app.use(express.json());
-    app.use(cors());
+  // Middleware go here
+  app.use(express.json());
 
-    // Routes go here
-    app.use('/api/options', optionsRouter);
-    app.use('/api/bookings', bookingsRouter);
-    app.use('/api/images', imagesRouter);
+  app.use(cors());
 
-    return app;
+  // Routes go here
+  app.use("/api/options", optionsRouter);
+  app.use("/api/bookings", bookingsRouter);
+  app.use("/api/images", imagesRouter);
+  app.use("/api/rebase", rebaseRouter);
+  return app;
 }
