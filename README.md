@@ -14,8 +14,12 @@ To run this project locally, follow these steps:
 ## Environment Variables
 
 Please create a `.env` file in the root directory of the project.
-Add these variables
-`PORT=<PORT NUMBER>
-NODE_ENV=development
-API_KEY=<YOUR_API_KEY_FOR_STABILITY.AI>
+Add these variables  
+
+`PORT=<PORT NUMBER>  
+
+NODE_ENV=development  
+
+API_KEY=<YOUR_API_KEY_FOR_STABILITY.AI>  
+
 BASE_URL=https://www.instabase.jp`
