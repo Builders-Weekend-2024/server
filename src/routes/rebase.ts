@@ -1,13 +1,16 @@
 import express from "express";
 import { Router, Request, Response } from "express";
 import puppeteer from "puppeteer";
+import axios from "axios";
 
 export const rebaseRouter: Router = express.Router();
 
 rebaseRouter.post("/", async (req: Request, res: Response) => {
   const { roomId } = req.body;
-  const data = await imageScraper(roomId);
-  res.send(data);
+  const images = await imageScraper(roomId);
+  const base64Images = await getImageBase64(images);
+
+  res.send(base64Images);
 });
 
 const imageScraper = async (roomId: string) => {
@@ -47,3 +50,22 @@ const imageScraper = async (roomId: string) => {
     await browser.close();
   }
 };
+
+async function getImageBase64(urls: string[]) {
+  try {
+    const responses = await Promise.all(
+      urls.map((url) => axios.get(url, { responseType: "arraybuffer" }))
+    );
+    const base64Images = await Promise.all(
+      responses.map((response) => {
+        const contentType = response.headers["content-type"];
+        const buffer = Buffer.from(response.data, "binary");
+        return `data:${contentType};base64,${buffer.toString("base64")}`;
+      })
+    );
+    return base64Images;
+  } catch (error) {
+    console.error("Error fetching images:", error);
+    throw error;
+  }
+}
